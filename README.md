@@ -18,14 +18,12 @@ A modern, responsive weather application built with Vue 3 and Vuetify that provi
 - Vue 3
 - Vuetify 3
 - Vue I18n for internationalization
-- OpenWeatherMap API
 - Vite
 
 ## Prerequisites
 
 - Node.js (v14 or higher)
 - npm (v6 or higher)
-- OpenWeatherMap API key
 
 ## Setup
 
@@ -40,12 +38,7 @@ cd weather-app-cursor
 npm install
 ```
 
-3. Create a `.env` file in the root directory and add your OpenWeatherMap API key:
-```env
-VITE_WEATHER_API_KEY=your_api_key_here
-```
-
-4. Start the development server:
+3. Start the development server:
 ```bash
 npm run dev
 ```
@@ -90,7 +83,6 @@ weather-app-cursor/
 │   ├── App.vue
 │   └── main.js
 │   
-├── .env
 ├── package.json
 └── README.md
 ```
@@ -109,6 +101,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- [OpenWeatherMap](https://openweathermap.org/) for providing the weather data API
 - [Vue.js](https://vuejs.org/) for the amazing framework
 - [Vuetify](https://vuetifyjs.com/) for the beautiful UI components
