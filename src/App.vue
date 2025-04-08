@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CitySearch from './components/CitySearch.vue'
 import { weatherService } from './services/weatherService'
@@ -110,8 +110,14 @@ onUnmounted(() => {
   if (countdownTimer) clearInterval(countdownTimer)
 })
 
-// Default city on load
+// Add watch effect for language changes
+watch(locale, (newLocale) => {
+  document.title = t('app.title')
+})
+
+// Update title on initial load
 onMounted(() => {
+  document.title = t('app.title')
   fetchWeatherData('London')
 })
 </script>
