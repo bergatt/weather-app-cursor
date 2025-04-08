@@ -1,0 +1,30 @@
+{
+  "app": {
+    "title": "App Meteo",
+    "search": {
+      "placeholder": "Cerca città",
+      "button": "Cerca"
+    },
+    "refresh": "Aggiorna"
+  },
+  "weather": {
+    "current": "Meteo Attuale",
+    "hourly": "Previsioni Orarie",
+    "daily": "Previsioni 5 Giorni",
+    "feelsLike": "Temperatura percepita",
+    "humidity": "Umidità",
+    "notFound": "Città \"{city}\" non trovata. Prova con un altro nome di città.",
+    "error": "Errore nel recupero dei dati meteo"
+  },
+  "weekdays": {
+    "short": {
+      "monday": "Lun",
+      "tuesday": "Mar",
+      "wednesday": "Mer",
+      "thursday": "Gio",
+      "friday": "Ven",
+      "saturday": "Sab",
+      "sunday": "Dom"
+    }
+  }
+} 

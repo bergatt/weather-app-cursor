@@ -1,0 +1,30 @@
+{
+  "app": {
+    "title": "Wetter App",
+    "search": {
+      "placeholder": "Stadt suchen",
+      "button": "Suchen"
+    },
+    "refresh": "Aktualisieren"
+  },
+  "weather": {
+    "current": "Aktuelles Wetter",
+    "hourly": "Stündliche Vorhersage",
+    "daily": "5-Tage-Vorhersage",
+    "feelsLike": "Gefühlt",
+    "humidity": "Luftfeuchtigkeit",
+    "notFound": "Stadt \"{city}\" nicht gefunden. Bitte versuchen Sie einen anderen Stadtnamen.",
+    "error": "Fehler beim Abrufen der Wetterdaten"
+  },
+  "weekdays": {
+    "short": {
+      "monday": "Mo",
+      "tuesday": "Di",
+      "wednesday": "Mi",
+      "thursday": "Do",
+      "friday": "Fr",
+      "saturday": "Sa",
+      "sunday": "So"
+    }
+  }
+} 

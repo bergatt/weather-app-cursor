@@ -1,0 +1,30 @@
+{
+  "app": {
+    "title": "天气应用",
+    "search": {
+      "placeholder": "搜索城市",
+      "button": "搜索"
+    },
+    "refresh": "刷新"
+  },
+  "weather": {
+    "current": "当前天气",
+    "hourly": "每小时预报",
+    "daily": "5天预报",
+    "feelsLike": "体感温度",
+    "humidity": "湿度",
+    "notFound": "未找到城市 \"{city}\"。请尝试其他城市名称。",
+    "error": "获取天气数据失败"
+  },
+  "weekdays": {
+    "short": {
+      "monday": "周一",
+      "tuesday": "周二",
+      "wednesday": "周三",
+      "thursday": "周四",
+      "friday": "周五",
+      "saturday": "周六",
+      "sunday": "周日"
+    }
+  }
+} 

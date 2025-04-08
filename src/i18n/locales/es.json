@@ -1,0 +1,30 @@
+{
+  "app": {
+    "title": "Aplicación del Clima",
+    "search": {
+      "placeholder": "Buscar ciudad",
+      "button": "Buscar"
+    },
+    "refresh": "Actualizar"
+  },
+  "weather": {
+    "current": "Clima Actual",
+    "hourly": "Pronóstico por Hora",
+    "daily": "Pronóstico de 5 Días",
+    "feelsLike": "Sensación térmica",
+    "humidity": "Humedad",
+    "notFound": "Ciudad \"{city}\" no encontrada. Por favor, intente con otro nombre de ciudad.",
+    "error": "Error al obtener datos del clima"
+  },
+  "weekdays": {
+    "short": {
+      "monday": "Lun",
+      "tuesday": "Mar",
+      "wednesday": "Mié",
+      "thursday": "Jue",
+      "friday": "Vie",
+      "saturday": "Sáb",
+      "sunday": "Dom"
+    }
+  }
+} 
