@@ -149,7 +149,7 @@ onMounted(() => {
     <v-main class="weather-background">
       <v-container fluid class="pa-6">
         <v-row>
-          <v-col cols="12" md="4">
+          <v-col cols="12">
             <CitySearch @search="handleSearch" />
           </v-col>
         </v-row>

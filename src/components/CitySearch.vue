@@ -1,24 +1,25 @@
 <template>
   <v-card class="mb-4">
     <v-card-text>
-      <v-form @submit.prevent="searchCity">
+      <v-form @submit.prevent="handleSubmit" class="w-100">
         <v-row>
           <v-col cols="12" sm="8">
             <v-text-field
               v-model="searchQuery"
               :label="t('app.search.placeholder')"
-              prepend-inner-icon="mdi-magnify"
+              append-inner-icon="mdi-magnify"
+              @click:append-inner="handleSubmit"
               variant="outlined"
               density="comfortable"
               hide-details
-              @keyup.enter="searchCity"
+              class="w-100"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="4">
             <v-btn
               color="primary"
               block
-              @click="searchCity"
+              @click="handleSubmit"
             >
               {{ t('app.search.button') }}
             </v-btn>
@@ -37,9 +38,15 @@ const { t } = useI18n()
 const searchQuery = ref('')
 const emit = defineEmits(['search'])
 
-const searchCity = () => {
+const handleSubmit = () => {
   if (searchQuery.value.trim()) {
     emit('search', searchQuery.value.trim())
   }
 }
-</script> 
+</script>
+
+<style scoped>
+.w-100 {
+  width: 100%;
+}
+</style> 
