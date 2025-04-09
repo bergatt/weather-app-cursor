@@ -6,6 +6,10 @@ import { weatherService } from './services/weatherService'
 
 const { t, locale } = useI18n()
 
+// Initialize locale from localStorage or default to 'en'
+const savedLocale = localStorage.getItem('weatherAppLocale') || 'en'
+locale.value = savedLocale
+
 const currentWeather = ref(null)
 const forecast = ref(null)
 const loading = ref(false)
@@ -113,6 +117,8 @@ onUnmounted(() => {
 // Add watch effect for language changes
 watch(locale, (newLocale) => {
   document.title = t('app.title')
+  // Save language preference to localStorage
+  localStorage.setItem('weatherAppLocale', newLocale)
 })
 
 // Update title on initial load
