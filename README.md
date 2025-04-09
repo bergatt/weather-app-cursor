@@ -9,7 +9,7 @@ A modern, responsive weather application built with Vue.js and Vuetify that prov
 - 🌍 Real-time weather data for any city worldwide
 - 📱 Responsive design that works on all devices
 - 🌈 Beautiful, dynamic UI with weather-based color themes
-- 🔄 Auto-refresh functionality (every 15 minutes)
+- 🔄 Auto-refresh functionality (every 5 minutes)
 - 📍 Geolocation support with London as fallback
 - 🌐 Multi-language support (6 languages)
 - ⭐ Favorite cities management
@@ -106,7 +106,7 @@ A modern, responsive weather application built with Vue.js and Vuetify that prov
 
 6. Monitor auto-refresh:
    - View the countdown timer in the app bar
-   - Data refreshes every 15 minutes
+   - Data refreshes every 5 minutes
    - Manual refresh button available
 
 ## Features in Detail

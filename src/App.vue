@@ -17,7 +17,7 @@ const currentWeather = ref(null)
 const forecast = ref(null)
 const loading = ref(false)
 const error = ref(null)
-const timeUntilRefresh = ref(15 * 60) // 15 minutes in seconds
+const timeUntilRefresh = ref(5 * 60) // 5 minutes in seconds
 let refreshTimer = null
 let countdownTimer = null
 
@@ -36,13 +36,13 @@ const startRefreshTimer = () => {
   if (countdownTimer) clearInterval(countdownTimer)
   
   // Reset countdown
-  timeUntilRefresh.value = 15 * 60
+  timeUntilRefresh.value = 5 * 60
   
   // Start countdown timer
   countdownTimer = setInterval(() => {
     timeUntilRefresh.value--
     if (timeUntilRefresh.value <= 0) {
-      timeUntilRefresh.value = 15 * 60
+      timeUntilRefresh.value = 5 * 60
       if (currentWeather.value?.name) {
         fetchWeatherData(currentWeather.value.name)
       }
