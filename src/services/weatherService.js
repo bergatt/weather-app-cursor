@@ -252,5 +252,20 @@ export const weatherService = {
       99: 'Thunderstorm with heavy hail'
     }
     return descriptions[code] || 'Unknown'
+  },
+
+  async searchCities(query) {
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=5&appid=${this.apiKey}`
+      )
+      if (!response.ok) {
+        throw new Error('Failed to fetch city suggestions')
+      }
+      return await response.json()
+    } catch (error) {
+      console.error('Error searching cities:', error)
+      return []
+    }
   }
 } 

@@ -141,6 +141,8 @@ const getCurrentLocation = () => {
 }
 
 const handleSearch = (city) => {
+  if (!city) return
+  console.log('Searching for city:', city)
   fetchWeatherData(city)
 }
 
@@ -202,28 +204,35 @@ onMounted(() => {
 <template>
   <v-app>
     <v-app-bar color="primary" elevation="4">
-      <v-app-bar-title class="text-h5 font-weight-bold">{{ t('app.title') }}</v-app-bar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon @click="getCurrentLocation" class="mr-2" title="Get current location">
-        <v-icon>mdi-crosshairs-gps</v-icon>
-      </v-btn>
-      <v-select
-        v-model="locale"
-        :items="languages"
-        item-title="name"
-        item-value="code"
-        density="comfortable"
-        hide-details
-        class="language-select"
-        @update:model-value="changeLanguage"
-      ></v-select>
-      <div class="d-flex align-center mr-4">
-        <v-icon size="small" class="mr-1">mdi-clock-outline</v-icon>
-        <span class="text-caption">{{ formatTime(timeUntilRefresh) }}</span>
-      </div>
-      <v-btn icon @click="fetchWeatherData(currentWeather?.name)">
-        <v-icon>mdi-refresh</v-icon>
-      </v-btn>
+      <v-container class="d-flex align-center">
+        <v-icon
+          icon="mdi-weather-partly-cloudy"
+          size="32"
+          class="mr-2"
+        ></v-icon>
+        <span class="text-h5 font-weight-bold">{{ t('app.title') }}</span>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="getCurrentLocation" class="mr-2" title="Get current location">
+          <v-icon>mdi-crosshairs-gps</v-icon>
+        </v-btn>
+        <v-select
+          v-model="locale"
+          :items="languages"
+          item-title="name"
+          item-value="code"
+          density="comfortable"
+          hide-details
+          class="language-select"
+          @update:model-value="changeLanguage"
+        ></v-select>
+        <div class="d-flex align-center mr-4">
+          <v-icon size="small" class="mr-1">mdi-clock-outline</v-icon>
+          <span class="text-caption">{{ formatTime(timeUntilRefresh) }}</span>
+        </div>
+        <v-btn icon @click="fetchWeatherData(currentWeather?.name)">
+          <v-icon>mdi-refresh</v-icon>
+        </v-btn>
+      </v-container>
     </v-app-bar>
 
     <v-main class="weather-background">
@@ -231,10 +240,7 @@ onMounted(() => {
         <v-row>
           <v-col cols="12">
             <CitySearch 
-              @search="handleSearch" 
-              :favorite-cities="favoriteCities"
-              @add-favorite="addToFavorites"
-              @remove-favorite="removeFromFavorites"
+              @search="handleSearch"
             />
           </v-col>
         </v-row>

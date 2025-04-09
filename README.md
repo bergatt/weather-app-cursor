@@ -1,91 +1,167 @@
 # Weather App
 
-A modern, responsive weather application built with Vue 3 and Vuetify that provides real-time weather information and forecasts for cities worldwide.
+A modern, responsive weather application built with Vue.js and Vuetify that provides real-time weather information and forecasts.
+
+![Weather App Screenshot](screenshot.png)
 
 ## Features
 
-- 🌍 Real-time weather data for any city
+- 🌍 Real-time weather data for any city worldwide
 - 📱 Responsive design that works on all devices
-- 🌤️ 5-day weather forecast
-- ⏰ Hourly weather updates
-- 🌐 Multi-language support (English, German, Spanish, Italian, French, Chinese)
-- 🔄 Automatic data refresh every 15 minutes
-- 🎨 Dynamic weather-based color themes
-- 🔍 Easy city search functionality
+- 🌈 Beautiful, dynamic UI with weather-based color themes
+- 🔄 Auto-refresh functionality (every 15 minutes)
+- 📍 Geolocation support with London as fallback
+- 🌐 Multi-language support (6 languages)
+- ⭐ Favorite cities management
+- 📊 5-day weather forecast
+- 🕒 Hourly weather updates
+- 🌡️ Detailed weather information including:
+  - Current temperature
+  - Feels like temperature
+  - Humidity
+  - Weather description
+  - Wind speed and direction
+- 🎨 Dynamic weather-based UI elements:
+  - Color themes that change based on weather conditions
+  - Animated background effects
+  - Hover animations on cards and buttons
+  - Smooth transitions and loading states
+- 🔍 Simple and intuitive city search:
+  - Quick search with city name
+  - Search button and Enter key support
+  - Search icon for easy access
 
-## Tech Stack
+## Supported Languages
 
-- Vue 3
+- English (British)
+- German (Deutsch)
+- Spanish (Español)
+- Italian (Italiano)
+- French (Français)
+- Chinese (中文)
+
+## Technologies Used
+
+- Vue.js 3
 - Vuetify 3
 - Vue I18n for internationalization
-- Vite
+- OpenWeatherMap API
+- Local Storage for favorites and language preferences
+- Material Design Icons
 
 ## Prerequisites
 
 - Node.js (v14 or higher)
-- npm (v6 or higher)
+- npm or yarn
+- OpenWeatherMap API key
 
 ## Setup
 
 1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/weather-app-cursor.git
-cd weather-app-cursor
-```
+   ```bash
+   git clone [repository-url]
+   cd weather-app
+   ```
 
 2. Install dependencies:
-```bash
-npm install
-```
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-3. Start the development server:
-```bash
-npm run dev
-```
+3. Create a `.env` file in the root directory and add your OpenWeatherMap API key:
+   ```
+   VITE_OPENWEATHER_API_KEY=your_api_key_here
+   ```
 
-The application will be available at `http://localhost:5173`
+4. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
 ## Usage
 
-1. Enter a city name in the search bar
-2. View current weather conditions including:
-   - Temperature
+1. Search for a city using the search bar:
+   - Type a city name
+   - Click the search button or press Enter
+   - The weather data will be displayed immediately
+
+2. View current weather conditions and forecasts:
+   - Current temperature with weather icon
+   - "Feels like" temperature
+   - Humidity percentage
    - Weather description
-   - Feels like temperature
-   - Humidity
-3. Check the hourly forecast for the next 5 hours
-4. View the 5-day forecast
-5. Switch between different languages using the language selector
-6. The app automatically refreshes weather data every 15 minutes
+   - City name and country code
 
-## Project Structure
+3. Add cities to favorites:
+   - Click the star icon to add/remove from favorites
+   - Quick access to favorite cities
+   - Persistent storage using localStorage
 
-```
-weather-app-cursor/
-├── src/
-│   ├── components/
-│   │   └── CitySearch.vue
-│   │   
-│   ├── services/
-│   │   └── weatherService.js
-│   │   
-│   ├── i18n/
-│   │   └── index.js
-│   │   
-│   ├── locales/
-│   │   ├── en.json
-│   │   ├── de.json
-│   │   ├── es.json
-│   │   ├── it.json
-│   │   ├── fr.json
-│   │   └── zh.json
-│   │   
-│   ├── App.vue
-│   └── main.js
-│   
-├── package.json
-└── README.md
-```
+4. Switch between languages:
+   - Use the language selector in the app bar
+   - All UI elements will update immediately
+   - Language preference is saved
+
+5. Use the location button:
+   - Get weather for your current location
+   - Fallback to London if geolocation fails
+   - 5-second timeout for location requests
+
+6. Monitor auto-refresh:
+   - View the countdown timer in the app bar
+   - Data refreshes every 15 minutes
+   - Manual refresh button available
+
+## Features in Detail
+
+### Weather Display
+- Current temperature with weather icon
+- "Feels like" temperature
+- Humidity percentage
+- Weather description
+- City name and country code
+- Dynamic weather icons that change based on conditions
+
+### Forecast
+- 5-day weather forecast
+- Hourly weather updates
+- Temperature predictions
+- Weather condition icons
+- Animated forecast cards with hover effects
+
+### Favorites
+- Add cities to favorites
+- Quick access to favorite cities
+- Persistent storage using localStorage
+- Easy removal of favorites
+- Interactive favorite chips with hover effects
+
+### Internationalization
+- Seamless language switching
+- Persistent language preference
+- Translated weather descriptions
+- Localized date and time formats
+- Language selector with smooth animations
+
+### Geolocation
+- Automatic location detection
+- Fallback to London if geolocation fails
+- Manual location refresh option
+- Error handling for unsupported browsers
+- 5-second timeout for location requests
+
+### UI/UX Features
+- Material Design icons throughout the interface
+- Weather-based color themes
+- Animated background with gradient effects
+- Card hover animations
+- Loading indicators
+- Smooth transitions
+- Responsive layout for all screen sizes
 
 ## Contributing
 
@@ -101,5 +177,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- [Vue.js](https://vuejs.org/) for the amazing framework
-- [Vuetify](https://vuetifyjs.com/) for the beautiful UI components
+- OpenWeatherMap for providing the weather data API
+- Vue.js team for the amazing framework
+- Vuetify team for the material design components
+- Material Design Icons for the beautiful icon set
+- All contributors who have helped improve this project
