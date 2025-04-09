@@ -151,11 +151,12 @@ const changeLanguage = (lang) => {
 }
 
 const getWeatherColor = (icon) => {
-  if (icon.includes('rainy')) return 'blue'
+  if (icon.includes('rainy') || icon.includes('pouring')) return 'blue'
   if (icon.includes('snowy')) return 'grey'
   if (icon.includes('cloudy')) return 'grey-darken-1'
   if (icon.includes('lightning')) return 'deep-purple'
   if (icon.includes('fog')) return 'grey-lighten-1'
+  if (icon.includes('night')) return 'indigo'
   return 'amber'
 }
 
@@ -184,12 +185,52 @@ const getWeatherIcon = (icon, dt) => {
   // Check if it's day or night
   const isDaytime = isDayTime(dt)
   
-  // If it's night and the icon indicates day, replace with night version
-  if (!isDaytime && icon.includes('d')) {
-    return icon.replace('d', 'n')
+  // Map OpenWeatherMap icon codes to Material Design Icons
+  const iconMap = {
+    // Clear sky
+    '01d': 'mdi-weather-sunny',
+    '01n': 'mdi-weather-night',
+    
+    // Few clouds
+    '02d': 'mdi-weather-partly-cloudy',
+    '02n': 'mdi-weather-night-partly-cloudy',
+    
+    // Scattered clouds
+    '03d': 'mdi-weather-cloudy',
+    '03n': 'mdi-weather-cloudy',
+    
+    // Broken clouds
+    '04d': 'mdi-weather-cloudy',
+    '04n': 'mdi-weather-cloudy',
+    
+    // Shower rain
+    '09d': 'mdi-weather-pouring',
+    '09n': 'mdi-weather-pouring',
+    
+    // Rain
+    '10d': 'mdi-weather-rainy',
+    '10n': 'mdi-weather-rainy',
+    
+    // Thunderstorm
+    '11d': 'mdi-weather-lightning-rainy',
+    '11n': 'mdi-weather-lightning-rainy',
+    
+    // Snow
+    '13d': 'mdi-weather-snowy',
+    '13n': 'mdi-weather-snowy',
+    
+    // Mist, fog, etc.
+    '50d': 'mdi-weather-fog',
+    '50n': 'mdi-weather-fog'
   }
   
-  return icon
+  // If it's night and the icon indicates day, replace with night version
+  if (!isDaytime && icon.includes('d')) {
+    icon = icon.replace('d', 'n')
+  }
+  
+  // Return the mapped icon or a default if not found
+  return iconMap[icon] || 'mdi-weather-cloudy'
 }
 
 const isDayTime = (dt) => {
