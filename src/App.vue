@@ -10,6 +10,9 @@ const { t, locale } = useI18n()
 const savedLocale = localStorage.getItem('weatherAppLocale') || 'en'
 locale.value = savedLocale
 
+// Initialize favorite cities from localStorage
+const favoriteCities = ref(JSON.parse(localStorage.getItem('favoriteCities') || '[]'))
+
 const currentWeather = ref(null)
 const forecast = ref(null)
 const loading = ref(false)
@@ -86,6 +89,57 @@ const fetchWeatherData = async (city) => {
   }
 }
 
+const getCurrentLocation = () => {
+  loading.value = true
+  error.value = null
+  
+  if (!navigator.geolocation) {
+    // Fallback to London if geolocation is not supported
+    fetchWeatherData('London')
+    return
+  }
+  
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      try {
+        const { latitude, longitude } = position.coords
+        const [current, forecastData] = await Promise.all([
+          weatherService.getCurrentWeatherByCoords(latitude, longitude),
+          weatherService.getForecastByCoords(latitude, longitude)
+        ])
+        
+        currentWeather.value = current
+        forecast.value = forecastData
+        
+        // Group forecast by day
+        const dailyForecast = forecastData.list.reduce((acc, item) => {
+          const date = new Date(item.dt * 1000).toLocaleDateString()
+          if (!acc[date]) {
+            acc[date] = item
+          }
+          return acc
+        }, {})
+        
+        forecast.value.daily = Object.values(dailyForecast).slice(0, 5)
+        
+        // Start refresh timer after successful fetch
+        startRefreshTimer()
+      } catch (err) {
+        // Fallback to London if there's an error getting weather data
+        fetchWeatherData('London')
+      } finally {
+        loading.value = false
+      }
+    },
+    (err) => {
+      // Fallback to London if user denies permission or there's a geolocation error
+      fetchWeatherData('London')
+      loading.value = false
+    },
+    { timeout: 5000 } // Add a 5-second timeout
+  )
+}
+
 const handleSearch = (city) => {
   fetchWeatherData(city)
 }
@@ -108,6 +162,22 @@ const getWeatherGradient = (icon) => {
   return `linear-gradient(135deg, var(--v-${baseColor}-base) 0%, var(--v-${baseColor}-darken-1) 100%)`
 }
 
+const addToFavorites = (city) => {
+  if (!favoriteCities.value.includes(city)) {
+    favoriteCities.value.push(city)
+    localStorage.setItem('favoriteCities', JSON.stringify(favoriteCities.value))
+  }
+}
+
+const removeFromFavorites = (city) => {
+  favoriteCities.value = favoriteCities.value.filter(c => c !== city)
+  localStorage.setItem('favoriteCities', JSON.stringify(favoriteCities.value))
+}
+
+const isFavorite = (city) => {
+  return favoriteCities.value.includes(city)
+}
+
 // Clean up timers on component unmount
 onUnmounted(() => {
   if (refreshTimer) clearInterval(refreshTimer)
@@ -124,7 +194,8 @@ watch(locale, (newLocale) => {
 // Update title on initial load
 onMounted(() => {
   document.title = t('app.title')
-  fetchWeatherData('London')
+  // Try to get current location first, fall back to London if denied
+  getCurrentLocation()
 })
 </script>
 
@@ -133,6 +204,9 @@ onMounted(() => {
     <v-app-bar color="primary" elevation="4">
       <v-app-bar-title class="text-h5 font-weight-bold">{{ t('app.title') }}</v-app-bar-title>
       <v-spacer></v-spacer>
+      <v-btn icon @click="getCurrentLocation" class="mr-2" title="Get current location">
+        <v-icon>mdi-crosshairs-gps</v-icon>
+      </v-btn>
       <v-select
         v-model="locale"
         :items="languages"
@@ -156,10 +230,40 @@ onMounted(() => {
       <v-container fluid class="pa-6">
         <v-row>
           <v-col cols="12">
-            <CitySearch @search="handleSearch" />
+            <CitySearch 
+              @search="handleSearch" 
+              :favorite-cities="favoriteCities"
+              @add-favorite="addToFavorites"
+              @remove-favorite="removeFromFavorites"
+            />
           </v-col>
         </v-row>
         
+        <!-- Favorite Cities -->
+        <v-row v-if="favoriteCities.length > 0" class="mb-4">
+          <v-col cols="12">
+            <v-card class="weather-card favorites-card" elevation="4">
+              <v-card-title class="text-h5 font-weight-bold">
+                {{ t('app.favorites') }}
+              </v-card-title>
+              <v-card-text>
+                <v-chip-group>
+                  <v-chip
+                    v-for="city in favoriteCities"
+                    :key="city"
+                    closable
+                    @click="fetchWeatherData(city)"
+                    @click:close="removeFromFavorites(city)"
+                    class="favorite-chip"
+                  >
+                    {{ city }}
+                  </v-chip>
+                </v-chip-group>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+
         <v-alert
           v-if="error"
           type="error"
@@ -270,20 +374,62 @@ onMounted(() => {
 .weather-background {
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.weather-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.5); opacity: 0.2; }
+  100% { transform: scale(1); opacity: 0.5; }
 }
 
 .weather-card {
   border-radius: 16px;
-  transition: transform 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   height: 100%;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .weather-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .current-weather {
-  background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 247, 250, 0.95) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.current-weather::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, transparent 60%);
+  animation: rotate 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .forecast-item {
@@ -292,24 +438,107 @@ onMounted(() => {
   background: rgba(255, 255, 255, 0.8);
   border-radius: 12px;
   margin: 8px;
-  transition: transform 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
 .forecast-item:hover {
-  transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-4px) scale(1.05);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .language-select {
   max-width: 150px;
   margin-right: 16px;
+  transition: transform 0.2s;
+}
+
+.language-select:hover {
+  transform: scale(1.05);
 }
 
 :deep(.v-card-title) {
   padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+:deep(.v-card-title)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--v-primary-base), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 :deep(.v-card-text) {
   padding: 20px;
+}
+
+:deep(.v-icon) {
+  transition: transform 0.3s ease;
+}
+
+:deep(.v-icon:hover) {
+  transform: scale(1.2) rotate(10deg);
+}
+
+:deep(.v-btn) {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:deep(.v-btn:hover) {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Add smooth page transitions */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+/* Add loading animation */
+.v-progress-circular {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Add text shadow effects */
+.text-h2 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.text-h5 {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.favorites-card {
+  margin-bottom: 16px;
+}
+
+.favorite-chip {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.favorite-chip:hover {
+  transform: scale(1.05);
+  background-color: var(--v-primary-base) !important;
+  color: white !important;
 }
 </style>

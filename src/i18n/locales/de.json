@@ -5,16 +5,19 @@
       "placeholder": "Stadt suchen",
       "button": "Suchen"
     },
-    "refresh": "Aktualisieren"
+    "refresh": "Aktualisieren",
+    "favorites": "Favorisierte Städte"
   },
   "weather": {
     "current": "Aktuelles Wetter",
     "hourly": "Stündliche Vorhersage",
     "daily": "5-Tage-Vorhersage",
-    "feelsLike": "Gefühlt",
+    "feelsLike": "Gefühlt wie",
     "humidity": "Luftfeuchtigkeit",
     "notFound": "Stadt \"{city}\" nicht gefunden. Bitte versuchen Sie einen anderen Stadtnamen.",
-    "error": "Fehler beim Abrufen der Wetterdaten"
+    "error": "Fehler beim Abrufen der Wetterdaten",
+    "geolocationNotSupported": "Geolocation wird von Ihrem Browser nicht unterstützt",
+    "geolocationError": "Fehler beim Abrufen Ihres Standorts: {message}"
   },
   "weekdays": {
     "short": {

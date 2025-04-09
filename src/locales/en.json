@@ -2,22 +2,20 @@
   "app": {
     "title": "Weather App",
     "search": {
-      "placeholder": "Search city",
+      "placeholder": "Enter city name",
       "button": "Search"
     },
-    "refresh": "Refresh",
     "favorites": "Favorite Cities"
   },
   "weather": {
-    "current": "Current Weather",
-    "hourly": "Hourly Forecast",
-    "daily": "5-Day Forecast",
+    "notFound": "City '{city}' not found",
     "feelsLike": "Feels like",
     "humidity": "Humidity",
-    "notFound": "City \"{city}\" not found. Please try a different city name.",
-    "error": "Failed to fetch weather data",
+    "hourly": "Hourly Forecast",
+    "daily": "5-Day Forecast",
     "geolocationNotSupported": "Geolocation is not supported by your browser",
-    "geolocationError": "Error getting your location: {message}"
+    "geolocationError": "Error getting your location: {message}",
+    "error": "An error occurred: {message}"
   },
   "weekdays": {
     "short": {

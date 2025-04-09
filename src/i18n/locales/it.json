@@ -5,16 +5,19 @@
       "placeholder": "Cerca città",
       "button": "Cerca"
     },
-    "refresh": "Aggiorna"
+    "refresh": "Aggiorna",
+    "favorites": "Città Preferite"
   },
   "weather": {
     "current": "Meteo Attuale",
     "hourly": "Previsioni Orarie",
-    "daily": "Previsioni 5 Giorni",
-    "feelsLike": "Temperatura percepita",
+    "daily": "Previsioni a 5 Giorni",
+    "feelsLike": "Sembra",
     "humidity": "Umidità",
     "notFound": "Città \"{city}\" non trovata. Prova con un altro nome di città.",
-    "error": "Errore nel recupero dei dati meteo"
+    "error": "Errore nel recupero dei dati meteo",
+    "geolocationNotSupported": "La geolocalizzazione non è supportata dal tuo browser",
+    "geolocationError": "Errore nel recupero della tua posizione: {message}"
   },
   "weekdays": {
     "short": {
