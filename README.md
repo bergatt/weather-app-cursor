@@ -45,7 +45,6 @@ A modern, responsive weather application built with Vue.js and Vuetify that prov
 - Vue.js 3
 - Vuetify 3
 - Vue I18n for internationalization
-- OpenWeatherMap API
 - Local Storage for favorites and language preferences
 - Material Design Icons
 
@@ -53,7 +52,6 @@ A modern, responsive weather application built with Vue.js and Vuetify that prov
 
 - Node.js (v14 or higher)
 - npm or yarn
-- OpenWeatherMap API key
 
 ## Setup
 
@@ -70,12 +68,7 @@ A modern, responsive weather application built with Vue.js and Vuetify that prov
    yarn install
    ```
 
-3. Create a `.env` file in the root directory and add your OpenWeatherMap API key:
-   ```
-   VITE_OPENWEATHER_API_KEY=your_api_key_here
-   ```
-
-4. Start the development server:
+3. Start the development server:
    ```bash
    npm run dev
    # or
@@ -177,7 +170,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- OpenWeatherMap for providing the weather data API
 - Vue.js team for the amazing framework
 - Vuetify team for the material design components
 - Material Design Icons for the beautiful icon set
