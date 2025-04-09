@@ -26,6 +26,7 @@ A modern, responsive weather application built with Vue.js and Vuetify that prov
   - Animated background effects
   - Hover animations on cards and buttons
   - Smooth transitions and loading states
+  - Day/night weather icons based on local time
 - 🔍 Simple and intuitive city search:
   - Quick search with city name
   - Search button and Enter key support
@@ -118,6 +119,7 @@ A modern, responsive weather application built with Vue.js and Vuetify that prov
 - Weather description
 - City name and country code
 - Dynamic weather icons that change based on conditions
+- Day/night weather icons based on local time (6 AM - 6 PM for day, 6 PM - 6 AM for night)
 
 ### Forecast
 - 5-day weather forecast

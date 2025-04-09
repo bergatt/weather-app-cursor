@@ -180,6 +180,28 @@ const isFavorite = (city) => {
   return favoriteCities.value.includes(city)
 }
 
+const getWeatherIcon = (icon, dt) => {
+  // Check if it's day or night
+  const isDaytime = isDayTime(dt)
+  
+  // If it's night and the icon indicates day, replace with night version
+  if (!isDaytime && icon.includes('d')) {
+    return icon.replace('d', 'n')
+  }
+  
+  return icon
+}
+
+const isDayTime = (dt) => {
+  if (!dt) return true // Default to daytime if no timestamp provided
+  
+  const date = new Date(dt * 1000)
+  const hours = date.getHours()
+  
+  // Consider daytime between 6 AM and 6 PM
+  return hours >= 6 && hours < 18
+}
+
 // Clean up timers on component unmount
 onUnmounted(() => {
   if (refreshTimer) clearInterval(refreshTimer)
@@ -300,7 +322,7 @@ onMounted(() => {
                       size="96"
                       :color="getWeatherColor(currentWeather.weather[0].icon)"
                     >
-                      {{ currentWeather.weather[0].icon }}
+                      {{ getWeatherIcon(currentWeather.weather[0].icon, currentWeather.dt) }}
                     </v-icon>
                   </v-col>
                   <v-col cols="6">
@@ -335,7 +357,7 @@ onMounted(() => {
                         :color="getWeatherColor(item.weather[0].icon)"
                         class="my-2"
                       >
-                        {{ item.weather[0].icon }}
+                        {{ getWeatherIcon(item.weather[0].icon, item.dt) }}
                       </v-icon>
                       <div class="text-h6">{{ Math.round(item.main.temp) }}°C</div>
                     </div>
@@ -361,7 +383,7 @@ onMounted(() => {
                         :color="getWeatherColor(item.weather[0].icon)"
                         class="my-2"
                       >
-                        {{ item.weather[0].icon }}
+                        {{ getWeatherIcon(item.weather[0].icon, item.dt) }}
                       </v-icon>
                       <div class="text-h6">{{ Math.round(item.main.temp) }}°C</div>
                     </div>
