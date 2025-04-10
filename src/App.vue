@@ -150,14 +150,53 @@ const changeLanguage = (lang) => {
   locale.value = lang
 }
 
-const getWeatherColor = (icon) => {
-  if (icon.includes('rainy') || icon.includes('pouring')) return 'blue'
-  if (icon.includes('snowy')) return 'grey'
-  if (icon.includes('cloudy')) return 'grey-darken-1'
-  if (icon.includes('lightning')) return 'deep-purple'
-  if (icon.includes('fog')) return 'grey-lighten-1'
-  if (icon.includes('night')) return 'indigo'
-  return 'amber'
+const getWeatherColor = (icon, dt, applyDayNight = true) => {
+  // If we don't need to apply day/night differentiation, use default colors
+  if (!applyDayNight) {
+    const defaultColors = {
+      'mdi-weather-rainy': 'blue',
+      'mdi-weather-pouring': 'blue-darken-1',
+      'mdi-weather-snowy': 'grey',
+      'mdi-weather-cloudy': 'grey-darken-1',
+      'mdi-weather-lightning': 'deep-purple',
+      'mdi-weather-fog': 'grey-lighten-1',
+      'mdi-weather-night': 'indigo'
+    }
+    
+    // Check for specific weather conditions
+    for (const [key, color] of Object.entries(defaultColors)) {
+      if (icon.includes(key)) return color
+    }
+    
+    // Default color for sunny/clear weather
+    return 'amber'
+  }
+  
+  const isDaytime = isDayTime(dt)
+  
+  // Base colors for different weather conditions
+  const colors = {
+    sunny: isDaytime ? 'amber' : 'indigo',
+    cloudy: isDaytime ? 'grey-darken-1' : 'grey-darken-2',
+    rainy: isDaytime ? 'blue' : 'blue-darken-2',
+    pouring: isDaytime ? 'blue-darken-1' : 'blue-darken-3',
+    snowy: isDaytime ? 'grey' : 'grey-darken-1',
+    lightning: isDaytime ? 'deep-purple' : 'deep-purple-darken-2',
+    fog: isDaytime ? 'grey-lighten-1' : 'grey',
+    night: 'indigo'
+  }
+  
+  // Check for specific weather conditions
+  if (icon.includes('mdi-weather-rainy')) return colors.rainy
+  if (icon.includes('mdi-weather-pouring')) return colors.pouring
+  if (icon.includes('mdi-weather-snowy')) return colors.snowy
+  if (icon.includes('mdi-weather-cloudy')) return colors.cloudy
+  if (icon.includes('mdi-weather-lightning')) return colors.lightning
+  if (icon.includes('mdi-weather-fog')) return colors.fog
+  if (icon.includes('mdi-weather-night')) return colors.night
+  
+  // Default colors for sunny/clear weather
+  return colors.sunny
 }
 
 const getWeatherGradient = (icon) => {
@@ -352,7 +391,7 @@ onMounted(() => {
                   <v-col cols="6" class="text-center">
                     <v-icon
                       size="96"
-                      :color="getWeatherColor(currentWeather.weather[0].icon)"
+                      :color="getWeatherColor(currentWeather.weather[0].icon, currentWeather.dt)"
                     >
                       {{ getWeatherIcon(currentWeather.weather[0].icon, currentWeather.dt) }}
                     </v-icon>
@@ -387,7 +426,7 @@ onMounted(() => {
                         </div>
                         <v-icon
                           size="48"
-                          :color="getWeatherColor(item.weather[0].icon)"
+                          :color="getWeatherColor(item.weather[0].icon, item.dt)"
                           class="my-2"
                         >
                           {{ getWeatherIcon(item.weather[0].icon, item.dt) }}
@@ -414,7 +453,7 @@ onMounted(() => {
                       </div>
                       <v-icon
                         size="48"
-                        :color="getWeatherColor(item.weather[0].icon)"
+                        :color="getWeatherColor(item.weather[0].icon, item.dt, false)"
                         class="my-2"
                       >
                         {{ getWeatherIcon(item.weather[0].icon, item.dt, false) }}
