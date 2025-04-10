@@ -78,7 +78,7 @@ const fetchWeatherData = async (city) => {
       return acc
     }, {})
     
-    forecast.value.daily = Object.values(dailyForecast).slice(0, 5)
+    forecast.value.daily = Object.values(dailyForecast).slice(0, 7)
     
     // Start refresh timer after successful fetch
     startRefreshTimer()
@@ -120,7 +120,7 @@ const getCurrentLocation = () => {
           return acc
         }, {})
         
-        forecast.value.daily = Object.values(dailyForecast).slice(0, 5)
+        forecast.value.daily = Object.values(dailyForecast).slice(0, 7)
         
         // Start refresh timer after successful fetch
         startRefreshTimer()
@@ -219,6 +219,19 @@ const isDayTime = (dt) => {
   
   // Consider daytime between 6 AM and 6 PM
   return hours >= 6 && hours < 18
+}
+
+const getNextHoursForecast = (forecastList) => {
+  if (!forecastList || forecastList.length === 0) return []
+  
+  const now = new Date().getTime() / 1000 // Convert to seconds to match forecast timestamps
+  const currentIndex = forecastList.findIndex(item => item.dt >= now)
+  
+  // If we can't find a future forecast, return the first 6 items
+  if (currentIndex === -1) return forecastList.slice(0, 6)
+  
+  // Return the next 6 hours starting from the current time
+  return forecastList.slice(currentIndex, currentIndex + 6)
 }
 
 // Clean up timers on component unmount
@@ -365,31 +378,33 @@ onMounted(() => {
             <v-card v-if="forecast" class="weather-card" elevation="4">
               <v-card-title class="text-h5 font-weight-bold">{{ t('weather.hourly') }}</v-card-title>
               <v-card-text>
-                <v-row>
-                  <v-col v-for="item in forecast.list.slice(0, 5)" :key="item.dt" cols="auto">
-                    <div class="text-center forecast-item">
-                      <div class="text-subtitle-1 font-weight-medium">
-                        {{ new Date(item.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
+                <div class="hourly-forecast-container">
+                  <v-row>
+                    <v-col v-for="item in getNextHoursForecast(forecast?.list)" :key="item.dt" cols="auto">
+                      <div class="text-center forecast-item">
+                        <div class="text-subtitle-1 font-weight-medium">
+                          {{ new Date(item.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) }}
+                        </div>
+                        <v-icon
+                          size="48"
+                          :color="getWeatherColor(item.weather[0].icon)"
+                          class="my-2"
+                        >
+                          {{ getWeatherIcon(item.weather[0].icon, item.dt) }}
+                        </v-icon>
+                        <div class="text-h6">{{ Math.round(item.main.temp) }}°C</div>
                       </div>
-                      <v-icon
-                        size="48"
-                        :color="getWeatherColor(item.weather[0].icon)"
-                        class="my-2"
-                      >
-                        {{ getWeatherIcon(item.weather[0].icon, item.dt) }}
-                      </v-icon>
-                      <div class="text-h6">{{ Math.round(item.main.temp) }}°C</div>
-                    </div>
-                  </v-col>
-                </v-row>
+                    </v-col>
+                  </v-row>
+                </div>
               </v-card-text>
             </v-card>
           </v-col>
 
-          <!-- 5-Day Forecast -->
+          <!-- 7-Day Forecast -->
           <v-col cols="12">
             <v-card v-if="forecast" class="weather-card" elevation="4">
-              <v-card-title class="text-h5 font-weight-bold">{{ t('weather.daily') }}</v-card-title>
+              <v-card-title class="text-h5 font-weight-bold">{{ t('weather.weekly') }}</v-card-title>
               <v-card-text>
                 <v-row>
                   <v-col v-for="item in forecast.daily" :key="item.dt" cols="auto">
@@ -480,20 +495,45 @@ onMounted(() => {
 }
 
 .forecast-item {
-  padding: 16px;
-  min-width: 120px;
+  padding: 12px;
+  min-width: 80px;
+  transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 12px;
   margin: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(5px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
 .forecast-item:hover {
-  transform: translateY(-4px) scale(1.05);
+  transform: translateY(-5px);
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.hourly-forecast-container {
+  overflow-x: auto;
+  padding-bottom: 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.hourly-forecast-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.hourly-forecast-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.hourly-forecast-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.hourly-forecast-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .language-select {

@@ -10,7 +10,7 @@
   "weather": {
     "current": "当前天气",
     "hourly": "每小时预报",
-    "daily": "5天预报",
+    "weekly": "7天预报",
     "feelsLike": "体感温度",
     "humidity": "湿度",
     "notFound": "未找到城市 \"{city}\"。请尝试其他城市名称。",

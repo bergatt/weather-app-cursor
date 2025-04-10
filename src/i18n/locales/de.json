@@ -12,6 +12,7 @@
     "current": "Aktuelles Wetter",
     "hourly": "Stündliche Vorhersage",
     "daily": "5-Tage-Vorhersage",
+    "weekly": "7-Tage-Vorhersage",
     "feelsLike": "Gefühlt wie",
     "humidity": "Luftfeuchtigkeit",
     "notFound": "Stadt \"{city}\" nicht gefunden. Bitte versuchen Sie einen anderen Stadtnamen.",

@@ -11,7 +11,7 @@
   "weather": {
     "current": "Current Weather",
     "hourly": "Hourly Forecast",
-    "daily": "5-Day Forecast",
+    "weekly": "7-Day Forecast",
     "feelsLike": "Feels like",
     "humidity": "Humidity",
     "notFound": "City \"{city}\" not found. Please try a different city name.",

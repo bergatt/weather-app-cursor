@@ -11,7 +11,7 @@
   "weather": {
     "current": "Clima Actual",
     "hourly": "Pronóstico por Hora",
-    "daily": "Pronóstico de 5 Días",
+    "weekly": "Pronóstico de 7 días",
     "feelsLike": "Se siente como",
     "humidity": "Humedad",
     "notFound": "Ciudad \"{city}\" no encontrada. Por favor, intente con otro nombre de ciudad.",
