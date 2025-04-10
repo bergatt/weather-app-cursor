@@ -181,7 +181,12 @@ const isFavorite = (city) => {
   return favoriteCities.value.includes(city)
 }
 
-const getWeatherIcon = (icon, dt) => {
+const getWeatherIcon = (icon, dt, applyDayNight = true) => {
+  // If we don't need to apply day/night differentiation, return the icon as is
+  if (!applyDayNight) {
+    return icon
+  }
+  
   // Check if it's day or night
   const isDaytime = isDayTime(dt)
   
@@ -397,7 +402,7 @@ onMounted(() => {
                         :color="getWeatherColor(item.weather[0].icon)"
                         class="my-2"
                       >
-                        {{ getWeatherIcon(item.weather[0].icon, item.dt) }}
+                        {{ getWeatherIcon(item.weather[0].icon, item.dt, false) }}
                       </v-icon>
                       <div class="text-h6">{{ Math.round(item.main.temp) }}°C</div>
                     </div>
