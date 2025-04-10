@@ -185,52 +185,25 @@ const getWeatherIcon = (icon, dt) => {
   // Check if it's day or night
   const isDaytime = isDayTime(dt)
   
-  // Map OpenWeatherMap icon codes to Material Design Icons
-  const iconMap = {
-    // Clear sky
-    '01d': 'mdi-weather-sunny',
-    '01n': 'mdi-weather-night',
-    
-    // Few clouds
-    '02d': 'mdi-weather-partly-cloudy',
-    '02n': 'mdi-weather-night-partly-cloudy',
-    
-    // Scattered clouds
-    '03d': 'mdi-weather-cloudy',
-    '03n': 'mdi-weather-cloudy',
-    
-    // Broken clouds
-    '04d': 'mdi-weather-cloudy',
-    '04n': 'mdi-weather-cloudy',
-    
-    // Shower rain
-    '09d': 'mdi-weather-pouring',
-    '09n': 'mdi-weather-pouring',
-    
-    // Rain
-    '10d': 'mdi-weather-rainy',
-    '10n': 'mdi-weather-rainy',
-    
-    // Thunderstorm
-    '11d': 'mdi-weather-lightning-rainy',
-    '11n': 'mdi-weather-lightning-rainy',
-    
-    // Snow
-    '13d': 'mdi-weather-snowy',
-    '13n': 'mdi-weather-snowy',
-    
-    // Mist, fog, etc.
-    '50d': 'mdi-weather-fog',
-    '50n': 'mdi-weather-fog'
+  // Map of day icons to their night equivalents
+  const dayToNightMap = {
+    'mdi-weather-sunny': 'mdi-weather-night',
+    'mdi-weather-partly-cloudy': 'mdi-weather-night-partly-cloudy',
+    'mdi-weather-cloudy': 'mdi-weather-cloudy', // Same for both
+    'mdi-weather-rainy': 'mdi-weather-rainy', // Same for both
+    'mdi-weather-pouring': 'mdi-weather-pouring', // Same for both
+    'mdi-weather-lightning-rainy': 'mdi-weather-lightning-rainy', // Same for both
+    'mdi-weather-snowy': 'mdi-weather-snowy', // Same for both
+    'mdi-weather-fog': 'mdi-weather-fog' // Same for both
   }
   
-  // If it's night and the icon indicates day, replace with night version
-  if (!isDaytime && icon.includes('d')) {
-    icon = icon.replace('d', 'n')
+  // If it's night and we have a night version of this icon, use it
+  if (!isDaytime && dayToNightMap[icon]) {
+    return dayToNightMap[icon]
   }
   
-  // Return the mapped icon or a default if not found
-  return iconMap[icon] || 'mdi-weather-cloudy'
+  // Otherwise return the original icon
+  return icon
 }
 
 const isDayTime = (dt) => {
